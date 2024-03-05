@@ -12,10 +12,6 @@ import { UploadImagesPlugin } from "novel/plugins";
 
 import { cx } from "class-variance-authority";
 import {
-  SignatureExtension,
-  SignatureNode,
-} from "./custom-extentions/signature";
-import {
   ButtonCounterNode,
   ButtonCounterExtention,
 } from "./custom-extentions/button-counter/extention";
@@ -119,6 +115,4 @@ export const defaultExtensions = [
   horizontalRule,
   ButtonCounterNode,
   ButtonCounterExtention,
-  SignatureNode,
-  SignatureExtension,
 ];

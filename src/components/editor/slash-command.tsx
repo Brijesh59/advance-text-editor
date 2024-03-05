@@ -25,21 +25,6 @@ export const suggestionItems = createSuggestionItems([
       window.open("/feedback", "_blank");
     },
   },
-  // {
-  //   title: "Signature",
-  //   description: "Add Sign placeholders",
-  //   searchTerms: ["sign"],
-  //   icon: <Text size={18} />,
-  //   command: ({ editor, range }) => {
-  //     const signatureText = "Best Regards,\n[Your Name]";
-  //     editor
-  //       .chain()
-  //       .focus()
-  //       .deleteRange(range)
-  //       ?.insertSignature({ signatureText })
-  //       .run();
-  //   },
-  // },
   {
     title: "Button Counter",
     description: "Counter with Btn",

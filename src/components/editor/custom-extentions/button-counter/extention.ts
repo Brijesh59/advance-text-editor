@@ -42,9 +42,8 @@ export const ButtonCounterExtention = Extension.create({
   addCommands() {
     return {
       insertButtonCounter:
-        (options) =>
-        ({ commands }) => {
-          // Define the attributes for your signature node, including style
+        (options: any) =>
+        ({ commands }: any) => {
           const attrs = {
             ...options,
           };

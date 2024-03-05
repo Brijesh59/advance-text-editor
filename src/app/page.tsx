@@ -105,7 +105,7 @@ const App = () => {
     );
   };
 
-  const onChange = (data: {}, id: string) => {
+  const onChange = (data: any, id: string) => {
     const sectionsCopy = [...sections];
     const currentSection = sectionsCopy.find((s) => s.id === id);
 

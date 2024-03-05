@@ -8,6 +8,9 @@ import {
   StarterKit,
   Placeholder,
 } from "novel/extensions";
+import Typography from "@tiptap/extension-typography";
+import TextAlign from "@tiptap/extension-text-align";
+
 import { UploadImagesPlugin } from "novel/plugins";
 
 import { cx } from "class-variance-authority";
@@ -15,11 +18,16 @@ import {
   ButtonCounterNode,
   ButtonCounterExtention,
 } from "./custom-extentions/button-counter/extention";
+import {
+  SignatureNode,
+  SignatureExtention,
+} from "./custom-extentions/signature/extention";
 
 //TODO I am using cx here to get tailwind autocomplete working, idk if someone else can write a regex to just capture the class key in objects
 
 //You can overwrite the placeholder with your own configuration
 const placeholder = Placeholder;
+
 const tiptapLink = TiptapLink.configure({
   HTMLAttributes: {
     class: cx(
@@ -102,6 +110,7 @@ const starterKit = StarterKit.configure({
     width: 4,
   },
   gapcursor: false,
+  // document: false,
 });
 
 export const defaultExtensions = [
@@ -113,6 +122,12 @@ export const defaultExtensions = [
   taskList,
   taskItem,
   horizontalRule,
+  Typography,
+  TextAlign.configure({
+    types: ["heading", "paragraph"],
+  }),
   ButtonCounterNode,
   ButtonCounterExtention,
+  SignatureNode,
+  SignatureExtention,
 ];

@@ -35,6 +35,15 @@ export const suggestionItems = createSuggestionItems([
     },
   },
   {
+    title: "Signature",
+    description: "Add Signatire",
+    searchTerms: ["signature"],
+    icon: <Text size={18} />,
+    command: ({ editor, range }) => {
+      editor.chain().focus().deleteRange(range)?.insertSignature().run();
+    },
+  },
+  {
     title: "Text",
     description: "Just start typing with plain text.",
     searchTerms: ["p", "paragraph"],

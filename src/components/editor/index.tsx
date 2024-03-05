@@ -14,6 +14,7 @@ import {
   type JSONContent,
 } from "novel";
 import { ImageResizer } from "novel/extensions";
+
 import { defaultExtensions } from "./extensions";
 import { Separator } from "./ui/separator";
 import { NodeSelector } from "./selectors/node-selector";
@@ -22,9 +23,13 @@ import { ColorSelector } from "./selectors/color-selector";
 
 import { TextButtons } from "./selectors/text-buttons";
 import { slashCommand, suggestionItems } from "./slash-command";
-import { ArrowDown, ArrowUp, DeleteIcon, Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, Trash2 } from "lucide-react";
 
-const extensions = [...defaultExtensions, slashCommand];
+import { ColumnExtension } from "@gocapsule/column-extension";
+import { AlignButtons } from "./selectors/align-selector";
+// import "@gocapsule/column-extension/src/index.css";
+
+const extensions = [...defaultExtensions, ColumnExtension, slashCommand];
 
 const Editor = ({
   index,
@@ -161,8 +166,13 @@ const Editor = ({
 
             <LinkSelector open={openLink} onOpenChange={setOpenLink} />
             <Separator orientation="vertical" />
+
             <TextButtons />
             <Separator orientation="vertical" />
+
+            <AlignButtons />
+            <Separator orientation="vertical" />
+
             <ColorSelector open={openColor} onOpenChange={setOpenColor} />
           </EditorBubble>
         </EditorContent>

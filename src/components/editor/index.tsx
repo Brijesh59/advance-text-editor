@@ -66,25 +66,36 @@ const Editor = ({
   return (
     <div className="relative w-[21cm] h-[29.7cm]">
       <div className="absolute right-5 top-5 z-10 mb-5 flex gap-3 items-center justify-center">
-        <button
-          onClick={onMoveUp}
-          className="hover:bg-gray-100 transition-all duration-150 rounded-sm p-1"
-        >
-          <ArrowUp className="text-muted-foreground text-sm" size={20} />
-        </button>
-        <button
-          onClick={onMoveDown}
-          className="hover:bg-gray-100 transition-all duration-150 rounded-sm p-1"
-        >
-          <ArrowDown className="text-muted-foreground text-sm" size={20} />
-        </button>
+        {/* Hide on first page */}
+        {index !== 0 && (
+          <button
+            onClick={onMoveUp}
+            className="hover:bg-gray-100 transition-all duration-150 rounded-sm p-1"
+          >
+            <ArrowUp className="text-muted-foreground text-sm" size={20} />
+          </button>
+        )}
 
-        <button
-          onClick={onRemove}
-          className="hover:bg-red-100 transition-all duration-150 rounded-sm p-1"
-        >
-          <Trash2 className="text-red-400 text-sm" size={20} />
-        </button>
+        {/* Hide on last page, and first page(if only one page is there) */}
+        {totalPages > 1 && index !== totalPages - 1 && (
+          <button
+            onClick={onMoveDown}
+            className="hover:bg-gray-100 transition-all duration-150 rounded-sm p-1"
+          >
+            <ArrowDown className="text-muted-foreground text-sm" size={20} />
+          </button>
+        )}
+
+        {/* Only show if there are more than one pages */}
+        {totalPages > 1 && (
+          <button
+            onClick={onRemove}
+            className="hover:bg-red-100 transition-all duration-150 rounded-sm p-1"
+          >
+            <Trash2 className="text-red-400 text-sm" size={20} />
+          </button>
+        )}
+
         <div className="rounded-lg bg-accent px-2 py-1 text-sm text-muted-foreground">
           {saveStatus}
         </div>
@@ -109,7 +120,7 @@ const Editor = ({
           }}
           onUpdate={({ editor }) => {
             debouncedUpdates(editor);
-            setSaveStatus("Unsaved");
+            setSaveStatus("Saving ...");
           }}
           slotAfter={<ImageResizer />}
         >

@@ -1,113 +1,167 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+import TiptapEditor from "@/components/editor";
+import { useEffect, useState } from "react";
+import { nanoid } from "nanoid";
+import { PlusSquare } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { defaultEditorContent } from "@/lib/content";
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  );
+function insertItemAfterIndex(array: any[], index: number, item: any) {
+  array.splice(index + 1, 0, item);
+  return array;
 }
+
+function moveItem(array: any[], index: number, moveUp: boolean) {
+  // Validate index range
+  if (index < 0 || index >= array.length) {
+    console.error("Index out of bounds.");
+    return array;
+  }
+
+  // Calculate the new index
+  const newIndex = moveUp ? index - 1 : index + 1;
+
+  // Check if movement is possible
+  if (newIndex < 0 || newIndex >= array.length) {
+    console.error("Movement not possible.");
+    return array;
+  }
+
+  // Perform the swap
+  [array[index], array[newIndex]] = [array[newIndex], array[index]];
+
+  return array;
+}
+
+const App = () => {
+  const [sections, setSections] = useState([
+    {
+      id: nanoid(),
+      data: defaultEditorContent,
+    },
+  ]);
+
+  const addNewSection = (currentSectionIndex: number) => {
+    const sectionsCopy = [...sections];
+
+    const newSections = insertItemAfterIndex(
+      sectionsCopy,
+      currentSectionIndex,
+      {
+        id: nanoid(),
+        data: defaultEditorContent,
+      }
+    );
+
+    return setSections(newSections);
+  };
+
+  const removeSection = (sectionId: string) => {
+    // Prevent deleting all pages. Atleast keep 1 page
+    if (sections.length === 1) return;
+
+    const sectionsCopy = [...sections];
+    const index = sectionsCopy.findIndex((s) => s.id === sectionId);
+
+    if (index !== -1) {
+      sectionsCopy.splice(index, 1);
+      setSections(sectionsCopy);
+
+      window.localStorage.setItem("sections", JSON.stringify(sectionsCopy));
+    }
+  };
+
+  const reArrangeSection = (sectionId: string, position: "up" | "down") => {
+    // Cannot reArrange if only 1 section exists
+    if (sections.length === 1) return;
+
+    const sectionsCopy = [...sections];
+    const index = sectionsCopy.findIndex((s) => s.id === sectionId);
+
+    // Add Other checks, if it's the last, we cannot move down, if its the first section, we cannot move it up
+    if (index === 0 && position === "up")
+      return console.error("Cannot move First page up");
+
+    if (index === sections.length - 1 && position === "down")
+      return console.error("Cannot move Last page down");
+
+    const newlyArrangedSections = moveItem(
+      sectionsCopy,
+      index,
+      position === "up" ? true : false
+    );
+
+    setSections(newlyArrangedSections);
+
+    window.localStorage.setItem(
+      "sections",
+      JSON.stringify(newlyArrangedSections)
+    );
+  };
+
+  const onChange = (data: {}, id: string) => {
+    const sectionsCopy = [...sections];
+    const currentSection = sectionsCopy.find((s) => s.id === id);
+
+    if (currentSection) {
+      currentSection.data = data;
+    }
+
+    setSections(sectionsCopy);
+
+    window.localStorage.setItem("sections", JSON.stringify(sectionsCopy));
+  };
+
+  useEffect(() => {
+    const _sections = window.localStorage.getItem("sections");
+    if (_sections) {
+      const sections = JSON.parse(_sections);
+      setSections(sections);
+    }
+  }, []);
+
+  return (
+    <div className="flex flex-col gap-5 items-center justify-center my-20">
+      {sections.map((section, index) => {
+        return (
+          <div
+            key={section.id}
+            className="flex flex-col gap-5 items-center justify-center"
+          >
+            <TiptapEditor
+              initialData={section.data}
+              index={index}
+              totalPages={sections.length}
+              onChange={(data) => onChange(data, section.id)}
+              onRemove={() => removeSection(section.id)}
+              onMoveUp={() => reArrangeSection(section.id, "up")}
+              onMoveDown={() => reArrangeSection(section.id, "down")}
+            />
+
+            <TooltipProvider delayDuration={100}>
+              <Tooltip>
+                <TooltipTrigger
+                  onClick={() => addNewSection(index)}
+                  className="p-2"
+                >
+                  <PlusSquare className="text-gray-500 hover:scale-105 transition-all duration-200" />
+                </TooltipTrigger>
+                <TooltipContent className="bg-black text-white">
+                  <p>Add a new page</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+export default App;

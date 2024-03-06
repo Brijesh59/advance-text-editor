@@ -1,6 +1,7 @@
 import {
   CheckSquare,
   Code,
+  Columns2,
   Heading1,
   Heading2,
   Heading3,
@@ -147,6 +148,14 @@ export const suggestionItems = createSuggestionItems([
     icon: <Code size={18} />,
     command: ({ editor, range }) =>
       editor.chain().focus().deleteRange(range).toggleCodeBlock().run(),
+  },
+  {
+    title: "2 columns",
+    description: "Create two columns.",
+    searchTerms: ["columns"],
+    icon: <Columns2 size={18} />,
+    command: ({ editor, range }) =>
+      editor.chain().focus().deleteRange(range).setColumns(2).run(),
   },
   {
     title: "Image",

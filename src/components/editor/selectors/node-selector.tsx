@@ -92,10 +92,10 @@ const items: SelectorItem[] = [
     isActive: (editor) => editor.isActive("codeBlock"),
   },
 ];
-interface NodeSelectorProps {
+export type NodeSelectorProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-}
+};
 
 export const NodeSelector = ({ open, onOpenChange }: NodeSelectorProps) => {
   const { editor } = useEditor();

@@ -1,7 +1,7 @@
 "use client";
 
 import TiptapEditor from "@/components/editor";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { nanoid } from "nanoid";
 import { PlusSquare } from "lucide-react";
 import {
@@ -118,6 +118,16 @@ const App = () => {
     window.localStorage.setItem("sections", JSON.stringify(sectionsCopy));
   };
 
+  const switchToNextSection = useCallback(
+    (currentSectionId: string) => {
+      const index = sections.findIndex((s) => s.id === currentSectionId);
+      if (index !== -1) {
+        addNewSection(index);
+      }
+    },
+    [sections]
+  );
+
   useEffect(() => {
     const _sections = window.localStorage.getItem("sections");
     if (_sections) {
@@ -142,6 +152,7 @@ const App = () => {
               onRemove={() => removeSection(section.id)}
               onMoveUp={() => reArrangeSection(section.id, "up")}
               onMoveDown={() => reArrangeSection(section.id, "down")}
+              switchToNextSection={() => switchToNextSection(section.id)}
             />
 
             <TooltipProvider delayDuration={100}>

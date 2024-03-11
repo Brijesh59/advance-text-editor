@@ -25,11 +25,9 @@ import { TextButtons } from "./selectors/text-buttons";
 import { slashCommand, suggestionItems } from "./slash-command";
 import { ArrowDown, ArrowUp, Trash2 } from "lucide-react";
 
-import { ColumnExtension } from "@gocapsule/column-extension";
 import { AlignButtons } from "./selectors/align-selector";
-// import "@gocapsule/column-extension/src/index.css";
 
-const extensions = [...defaultExtensions, ColumnExtension, slashCommand];
+const extensions = [...defaultExtensions, slashCommand];
 
 const Editor = ({
   index,
@@ -53,6 +51,7 @@ const Editor = ({
   const [saveStatus, setSaveStatus] = useState("Saved");
 
   const [openNode, setOpenNode] = useState(false);
+  const [openAlignment, setOpenAlignment] = useState(false);
   const [openColor, setOpenColor] = useState(false);
   const [openLink, setOpenLink] = useState(false);
 
@@ -116,7 +115,7 @@ const Editor = ({
         <EditorContent
           initialContent={initialContent}
           extensions={extensions}
-          className="relative min-h-[500px] w-[21cm] h-[29.7cm] max-w-screen-lg border-muted bg-background sm:mb-[calc(20vh)] sm:rounded-sm sm:border sm:shadow-sm"
+          className="relative min-h-[500px] w-[21cm] h-[29.7cm] max-w-screen-lg border-muted bg-background sm:mb-[calc(20vh)] sm:rounded-sm sm:border sm:shadow-sm overflow-hidden"
           editorProps={{
             ...defaultEditorProps,
             attributes: {
@@ -170,7 +169,10 @@ const Editor = ({
             <TextButtons />
             <Separator orientation="vertical" />
 
-            <AlignButtons />
+            <AlignButtons
+              open={openAlignment}
+              onOpenChange={setOpenAlignment}
+            />
             <Separator orientation="vertical" />
 
             <ColorSelector open={openColor} onOpenChange={setOpenColor} />

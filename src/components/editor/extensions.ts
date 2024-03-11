@@ -22,6 +22,7 @@ import {
   SignatureNode,
   SignatureExtention,
 } from "./custom-extentions/signature/extention";
+import ColumnExtension from "@gocapsule/column-extension";
 
 //TODO I am using cx here to get tailwind autocomplete working, idk if someone else can write a regex to just capture the class key in objects
 
@@ -110,7 +111,6 @@ const starterKit = StarterKit.configure({
     width: 4,
   },
   gapcursor: false,
-  // document: false,
 });
 
 export const defaultExtensions = [
@@ -126,6 +126,7 @@ export const defaultExtensions = [
   TextAlign.configure({
     types: ["heading", "paragraph"],
   }),
+  ColumnExtension,
   ButtonCounterNode,
   ButtonCounterExtention,
   SignatureNode,

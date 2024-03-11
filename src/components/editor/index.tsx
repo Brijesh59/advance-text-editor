@@ -115,7 +115,7 @@ const Editor = ({
         <EditorContent
           initialContent={initialContent}
           extensions={extensions}
-          className="relative min-h-[500px] w-[21cm] h-[29.7cm] max-w-screen-lg border-muted bg-background sm:mb-[calc(20vh)] sm:rounded-sm sm:border sm:shadow-sm"
+          className="relative min-h-[500px] w-[21cm] h-[29.7cm] max-w-screen-lg border-muted bg-background sm:mb-[calc(20vh)] sm:rounded-sm sm:border sm:shadow-sm overflow-hidden"
           editorProps={{
             ...defaultEditorProps,
             attributes: {

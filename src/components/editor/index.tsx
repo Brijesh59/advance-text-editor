@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import {
   defaultEditorProps,
@@ -64,6 +64,7 @@ const Content = ({
   const insertPageBreakMarkers = () => {
     // Assuming editorContainerRef is the ref to the .editor-container
     const container = editorRef.current;
+
     if (!container) return;
 
     // Clear existing markers before re-inserting
@@ -98,15 +99,21 @@ const Content = ({
     }
   };
 
+  useEffect(() => {
+    setTimeout(() => {
+      insertPageBreakMarkers();
+    }, 500);
+  }, []);
+
   if (!initialContent) return null;
 
   return (
-    <div ref={editorRef} className="editor-container">
+    <div className="editor-container" ref={editorRef}>
       <EditorContent
         initialContent={initialContent}
         extensions={[...extensions]}
         autofocus
-        className="relative min-h-[29.7cm] w-[21cm] border-muted bg-background sm:rounded-sm sm:border sm:shadow-sm"
+        className="relative min-h-[1110px] w-[21cm] border-muted bg-background sm:rounded-sm sm:border sm:shadow-sm"
         editorProps={{
           ...defaultEditorProps,
           attributes: {

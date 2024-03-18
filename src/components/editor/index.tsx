@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import {
   defaultEditorProps,
@@ -31,6 +31,147 @@ import { AlignButtons } from "./selectors/align-selector";
 
 const extensions = [...defaultExtensions, ColumnExtension, slashCommand];
 
+const A4_PAGE_HEIGHT = 1123;
+
+const Content = ({
+  onChange,
+  initialData,
+  setSaveStatus,
+}: {
+  initialData: JSONContent;
+  onChange?: (data: {}) => void;
+  setSaveStatus: (s: string) => void;
+  onApproachingEnd?: (clientHeight: number) => void;
+}) => {
+  const editorRef = useRef<any>(null);
+
+  const initialContent = initialData;
+
+  const [openNode, setOpenNode] = useState(false);
+  const [openColor, setOpenColor] = useState(false);
+  const [openLink, setOpenLink] = useState(false);
+
+  const debouncedUpdates = useDebouncedCallback(
+    async (editor: EditorInstance) => {
+      const json = editor.getJSON();
+      setSaveStatus("Saved");
+
+      if (onChange) onChange(json);
+    },
+    500
+  );
+
+  const insertPageBreakMarkers = () => {
+    // Assuming editorContainerRef is the ref to the .editor-container
+    const container = editorRef.current;
+    if (!container) return;
+
+    // Clear existing markers before re-inserting
+    const existingMarkers = container.querySelectorAll(".page-break-marker");
+    existingMarkers.forEach((marker: any) => marker.remove());
+
+    const contentHeight = container.scrollHeight;
+    const numberOfPages = Math.floor(contentHeight / A4_PAGE_HEIGHT);
+
+    for (let i = 1; i <= numberOfPages; i++) {
+      const marker = document.createElement("div");
+      marker.className = "page-break-marker";
+      marker.style.position = "absolute";
+      marker.style.left = "0";
+      marker.style.width = "100%";
+      marker.style.borderTop = "1.5px dashed lightgray";
+      marker.style.top = `${A4_PAGE_HEIGHT * i}px`;
+
+      const label = document.createElement("span");
+      label.textContent = "PDF page break";
+      label.style.position = "absolute";
+      label.style.left = "-110px";
+      label.style.bottom = "-10px";
+
+      label.style.color = "gray";
+      label.style.fontSize = "12px";
+
+      label.style.padding = "2px 5px";
+
+      marker.appendChild(label);
+      container.appendChild(marker);
+    }
+  };
+
+  if (!initialContent) return null;
+
+  return (
+    <div ref={editorRef} className="editor-container">
+      <EditorContent
+        initialContent={initialContent}
+        extensions={[...extensions]}
+        autofocus
+        className="relative min-h-[29.7cm] w-[21cm] border-muted bg-background sm:rounded-sm sm:border sm:shadow-sm"
+        editorProps={{
+          ...defaultEditorProps,
+          attributes: {
+            class: `prose-lg prose-stone dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full`,
+          },
+        }}
+        onUpdate={({ editor }) => {
+          debouncedUpdates(editor);
+
+          insertPageBreakMarkers();
+          setSaveStatus("Saving ...");
+        }}
+        slotAfter={<ImageResizer />}
+      >
+        <EditorCommand className="z-50 h-auto max-h-[330px] w-72 overflow-y-auto rounded-md border border-muted bg-background px-1 py-2 shadow-md transition-all">
+          <EditorCommandEmpty className="px-2 text-muted-foreground">
+            No results
+          </EditorCommandEmpty>
+
+          {suggestionItems.map((item: any) => (
+            <EditorCommandItem
+              value={item.title}
+              onCommand={(val) => item.command(val)}
+              className={`flex w-full items-center space-x-2 rounded-md px-2 py-1 text-left text-sm hover:bg-accent aria-selected:bg-accent `}
+              key={item.title}
+            >
+              <div className="flex h-10 w-10 items-center justify-center rounded-md border border-muted bg-background">
+                {item.icon}
+              </div>
+              <div>
+                <p className="font-medium">{item.title}</p>
+                <p className="text-xs text-muted-foreground">
+                  {item.description}
+                </p>
+              </div>
+            </EditorCommandItem>
+          ))}
+        </EditorCommand>
+
+        <EditorBubble
+          tippyOptions={{
+            placement: "top",
+          }}
+          className="flex w-fit max-w-[90vw] overflow-hidden rounded border border-muted bg-background shadow-xl"
+        >
+          <Separator orientation="vertical" />
+          <NodeSelector open={openNode} onOpenChange={setOpenNode} />
+          <Separator orientation="vertical" />
+
+          <LinkSelector open={openLink} onOpenChange={setOpenLink} />
+          <Separator orientation="vertical" />
+
+          <TextButtons />
+          <Separator orientation="vertical" />
+
+          <AlignButtons />
+          <Separator orientation="vertical" />
+
+          <ColorSelector open={openColor} onOpenChange={setOpenColor} />
+        </EditorBubble>
+      </EditorContent>
+    </div>
+  );
+};
+
 const Editor = ({
   index,
   totalPages,
@@ -52,24 +193,10 @@ const Editor = ({
 
   const [saveStatus, setSaveStatus] = useState("Saved");
 
-  const [openNode, setOpenNode] = useState(false);
-  const [openColor, setOpenColor] = useState(false);
-  const [openLink, setOpenLink] = useState(false);
-
-  const debouncedUpdates = useDebouncedCallback(
-    async (editor: EditorInstance) => {
-      const json = editor.getJSON();
-      setSaveStatus("Saved");
-
-      if (onChange) onChange(json);
-    },
-    500
-  );
-
   if (!initialContent) return null;
 
   return (
-    <div className="relative w-[21cm] h-[29.7cm]">
+    <div className="relative w-[21cm] bg-red-100">
       <div className="absolute right-5 top-5 z-10 mb-5 flex gap-3 items-center justify-center">
         {/* Hide on first page */}
         {index !== 0 && (
@@ -106,76 +233,18 @@ const Editor = ({
         </div>
       </div>
 
-      <div className="absolute bottom-0  ml-[50%] -translate-x-[50%] z-10 mb-5 flex gap-3 items-center justify-center">
+      <div className="absolute bottom-0 ml-[50%] -translate-x-[50%] z-10 mb-5 flex gap-3 items-center justify-center">
         <div className="rounded-lg bg-accent px-2 py-1 text-sm text-muted-foreground">
           Page {index + 1} of {totalPages}
         </div>
       </div>
 
       <EditorRoot>
-        <EditorContent
-          initialContent={initialContent}
-          extensions={extensions}
-          className="relative min-h-[500px] w-[21cm] h-[29.7cm] max-w-screen-lg border-muted bg-background sm:mb-[calc(20vh)] sm:rounded-sm sm:border sm:shadow-sm"
-          editorProps={{
-            ...defaultEditorProps,
-            attributes: {
-              class: `prose-lg prose-stone dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full`,
-            },
-          }}
-          onUpdate={({ editor }) => {
-            debouncedUpdates(editor);
-            setSaveStatus("Saving ...");
-          }}
-          slotAfter={<ImageResizer />}
-        >
-          <EditorCommand className="z-50 h-auto max-h-[330px]  w-72 overflow-y-auto rounded-md border border-muted bg-background px-1 py-2 shadow-md transition-all">
-            <EditorCommandEmpty className="px-2 text-muted-foreground">
-              No results
-            </EditorCommandEmpty>
-
-            {suggestionItems.map((item: any) => (
-              <EditorCommandItem
-                value={item.title}
-                onCommand={(val) => item.command(val)}
-                className={`flex w-full items-center space-x-2 rounded-md px-2 py-1 text-left text-sm hover:bg-accent aria-selected:bg-accent `}
-                key={item.title}
-              >
-                <div className="flex h-10 w-10 items-center justify-center rounded-md border border-muted bg-background">
-                  {item.icon}
-                </div>
-                <div>
-                  <p className="font-medium">{item.title}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {item.description}
-                  </p>
-                </div>
-              </EditorCommandItem>
-            ))}
-          </EditorCommand>
-
-          <EditorBubble
-            tippyOptions={{
-              placement: "top",
-            }}
-            className="flex w-fit max-w-[90vw] overflow-hidden rounded border border-muted bg-background shadow-xl"
-          >
-            <Separator orientation="vertical" />
-            <NodeSelector open={openNode} onOpenChange={setOpenNode} />
-            <Separator orientation="vertical" />
-
-            <LinkSelector open={openLink} onOpenChange={setOpenLink} />
-            <Separator orientation="vertical" />
-
-            <TextButtons />
-            <Separator orientation="vertical" />
-
-            <AlignButtons />
-            <Separator orientation="vertical" />
-
-            <ColorSelector open={openColor} onOpenChange={setOpenColor} />
-          </EditorBubble>
-        </EditorContent>
+        <Content
+          onChange={onChange}
+          initialData={initialData}
+          setSaveStatus={setSaveStatus}
+        />
       </EditorRoot>
     </div>
   );

@@ -36,16 +36,17 @@ function reducer(state: any, action: any) {
       };
     case "delete_row":
       const deleteRowIndex = state.data.findIndex(
-        (row: any) => row.id === Number(action.rowId)
+        (row: any, index: number) => index === action.rowIndex
       );
-      console.log("deleteRowIndex", deleteRowIndex);
+
+      const tempData = [...state.data];
+      if (deleteRowIndex !== -1) {
+        tempData.splice(deleteRowIndex, 1);
+      }
       return {
         ...state,
         skipReset: true,
-        data: [
-          ...state.data.slice(0, deleteRowIndex),
-          ...state.data.slice(deleteRowIndex + 1, state.data.length),
-        ],
+        data: [...tempData],
       };
     case "update_column_type":
       const typeIndex = state.columns.findIndex(
@@ -228,12 +229,18 @@ function reducer(state: any, action: any) {
   }
 }
 
-export const CustomTable = () => {
-  const [state, dispatch] = useReducer(reducer, makeData(10));
+export const CustomTable = (props: any) => {
+  const [state, dispatch] = useReducer(
+    reducer,
+    props?.node?.attrs?.tableData || []
+  );
 
   useEffect(() => {
-    dispatch({ type: "enable_reset" });
-  }, [state.data, state.columns]);
+    // dispatch({ type: "enable_reset" });
+    props.updateAttributes({
+      tableData: state,
+    });
+  }, [state]);
 
   return (
     <NodeViewWrapper>

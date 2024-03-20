@@ -104,7 +104,7 @@ export default function Table({
                 <div
                   className="tr add-row"
                   onClick={() =>
-                    dataDispatch({ type: "delete_row", rowId: row.id })
+                    dataDispatch({ type: "delete_row", rowIndex: i })
                   }
                 >
                   <span

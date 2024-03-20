@@ -1,69 +1,33 @@
 import { randomColor } from "./utils";
 
 export default function makeData(count: any) {
-  let data = [];
-  let options = [];
-  for (let i = 0; i < count; i++) {
-    let row = {
-      id: i,
-      firstName: "vikash",
-      lastName: "kushwwaha",
-      email: "xyz@gmail.com",
-      age: Math.floor(20 + Math.random() * 20),
-      music: "random",
-    };
-    options.push({ label: row.music, backgroundColor: randomColor() });
-
-    data.push(row);
-  }
+  let data: any = [];
+  let options: any = [];
 
   let columns = [
     {
-      id: "firstName",
-      label: "First Name",
-      accessor: "firstName",
+      id: "0",
+      label: "",
+      accessor: "0",
       minWidth: 100,
       dataType: "text",
       options: [],
     },
     {
-      id: "lastName",
-      label: "Last Name",
-      accessor: "lastName",
+      id: "1",
+      label: "",
+      accessor: "1",
       minWidth: 100,
       dataType: "text",
       options: [],
     },
     {
-      id: "age",
-      label: "Age",
-      accessor: "age",
-      width: 80,
-      dataType: "number",
-      options: [],
-    },
-    {
-      id: "email",
-      label: "E-Mail",
-      accessor: "email",
-      width: 300,
+      id: "2",
+      label: "",
+      accessor: "2",
+      width: 100,
       dataType: "text",
       options: [],
-    },
-    {
-      id: "music",
-      label: "Music Preference",
-      accessor: "music",
-      dataType: "select",
-      width: 200,
-      options: options,
-    },
-    {
-      id: 999999,
-      width: 20,
-      label: "+",
-      disableResizing: true,
-      dataType: "null",
     },
   ];
   return { columns: columns, data: data, skipReset: false };

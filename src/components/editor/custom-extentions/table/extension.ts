@@ -3,6 +3,7 @@ import { ReactNodeViewRenderer } from "@tiptap/react";
 import { Extension } from "@tiptap/core";
 
 import { CustomTable } from "./component";
+import makeData from "./makeData";
 
 export const CustomTableNode = Node.create({
   name: "customTable",
@@ -13,8 +14,8 @@ export const CustomTableNode = Node.create({
 
   addAttributes() {
     return {
-      count: {
-        default: 0,
+      tableData: {
+        default: makeData(10),
       },
     };
   },

@@ -87,8 +87,8 @@ export default function Cell({
   switch (dataType) {
     case "text":
       element = (
-        <ContentEditable
-          html={(value.value && value.value.toString()) || ""}
+        <input
+          value={(value.value && value.value.toString()) || ""}
           onChange={onChange}
           onBlur={() => setValue((old) => ({ value: old.value, update: true }))}
           className="data-input"

@@ -29,6 +29,13 @@ export default function makeData(count: any) {
       dataType: "text",
       options: [],
     },
+    {
+      id: 999999,
+      width: 20,
+      label: "+",
+      disableResizing: true,
+      dataType: "null",
+    },
   ];
   return { columns: columns, data: data, skipReset: false };
 }

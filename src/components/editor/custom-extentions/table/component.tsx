@@ -2,10 +2,8 @@ import React, { useEffect, useReducer } from "react";
 
 import { NodeViewWrapper } from "@tiptap/react";
 import "./style.css";
-import makeData from "./makeData";
 import Table from "./Table";
 import { randomColor, shortId } from "./utils";
-import { grey } from "./colors";
 
 function reducer(state: any, action: any) {
   switch (action.type) {
@@ -244,32 +242,14 @@ export const CustomTable = (props: any) => {
 
   return (
     <NodeViewWrapper>
-      {/* <div
-        style={{
-          width: "100vw",
-          height: "100vh",
-          overflowX: "hidden",
-        }}
-      > */}
       <div style={{ overflow: "auto", display: "flex" }}>
-        <div
-          style={{
-            // flex: "1 1 auto",
-            padding: "1rem",
-            maxWidth: 1000,
-            marginLeft: "auto",
-            marginRight: "auto",
-          }}
-        >
-          <Table
-            columns={state?.columns}
-            data={state?.data}
-            dispatch={dispatch}
-            skipReset={state?.skipReset}
-          />
-        </div>
+        <Table
+          columns={state?.columns}
+          data={state?.data}
+          dispatch={dispatch}
+          skipReset={state?.skipReset}
+        />
       </div>
-      {/* </div> */}
     </NodeViewWrapper>
   );
 };

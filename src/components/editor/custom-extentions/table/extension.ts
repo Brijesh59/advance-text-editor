@@ -23,13 +23,13 @@ export const CustomTableNode = Node.create({
   parseHTML() {
     return [
       {
-        tag: "customTable",
+        tag: "custom-table",
       },
     ];
   },
 
   renderHTML({ HTMLAttributes }) {
-    return ["customTable", mergeAttributes(HTMLAttributes)];
+    return ["custom-table", mergeAttributes(HTMLAttributes)];
   },
 
   addNodeView() {

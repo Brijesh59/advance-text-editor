@@ -97,8 +97,9 @@ export default function Cell({
       break;
     case "number":
       element = (
-        <ContentEditable
-          html={(value.value && value.value.toString()) || ""}
+        <input
+          type="number"
+          value={(value.value && value.value.toString()) || ""}
           onChange={onChange}
           onBlur={() => setValue((old) => ({ value: old.value, update: true }))}
           className="data-input text-align-right"

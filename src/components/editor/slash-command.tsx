@@ -55,6 +55,15 @@ export const suggestionItems = createSuggestionItems([
     },
   },
   {
+    title: "Pricing Table",
+    description: "Add Pricing Table",
+    searchTerms: ["pricing", "table"],
+    icon: <Columns2 size={18} />,
+    command: ({ editor, range }) => {
+      editor.chain().focus().deleteRange(range)?.insertPricing().run();
+    },
+  },
+  {
     title: "Text",
     description: "Just start typing with plain text.",
     searchTerms: ["p", "paragraph"],

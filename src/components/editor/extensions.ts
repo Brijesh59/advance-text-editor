@@ -22,6 +22,15 @@ import {
   SignatureNode,
   SignatureExtention,
 } from "./custom-extentions/signature/extention";
+import {
+  CustomTableNode,
+  CustomTableExtention,
+} from "./custom-extentions/table/extension";
+import {
+  PricingTableNode,
+  PricingTableExtention,
+} from "./custom-extentions/pricing-table/extension";
+import ColumnExtension from "@gocapsule/column-extension";
 
 //TODO I am using cx here to get tailwind autocomplete working, idk if someone else can write a regex to just capture the class key in objects
 
@@ -38,7 +47,8 @@ const tiptapLink = TiptapLink.configure({
 
 const tiptapImage = TiptapImage.extend({
   addProseMirrorPlugins() {
-    return [UploadImagesPlugin()];
+    // return [UploadImagesPlugin()];
+    return [];
   },
 }).configure({
   allowBase64: true,
@@ -110,7 +120,6 @@ const starterKit = StarterKit.configure({
     width: 4,
   },
   gapcursor: false,
-  // document: false,
 });
 
 export const defaultExtensions = [
@@ -126,8 +135,13 @@ export const defaultExtensions = [
   TextAlign.configure({
     types: ["heading", "paragraph"],
   }),
+  ColumnExtension,
   ButtonCounterNode,
   ButtonCounterExtention,
   SignatureNode,
   SignatureExtention,
+  CustomTableNode,
+  CustomTableExtention,
+  PricingTableNode,
+  PricingTableExtention,
 ];

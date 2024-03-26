@@ -1,6 +1,8 @@
 import {
   CheckSquare,
+  ClipboardPenLine,
   Code,
+  Columns2,
   Heading1,
   Heading2,
   Heading3,
@@ -38,9 +40,27 @@ export const suggestionItems = createSuggestionItems([
     title: "Signature",
     description: "Add Signatire",
     searchTerms: ["signature"],
-    icon: <Text size={18} />,
+    icon: <ClipboardPenLine size={18} />,
     command: ({ editor, range }) => {
       editor.chain().focus().deleteRange(range)?.insertSignature().run();
+    },
+  },
+  {
+    title: "Table",
+    description: "Add Table",
+    searchTerms: ["table"],
+    icon: <Columns2 size={18} />,
+    command: ({ editor, range }) => {
+      editor.chain().focus().deleteRange(range)?.insertTable().run();
+    },
+  },
+  {
+    title: "Pricing Table",
+    description: "Add Pricing Table",
+    searchTerms: ["pricing", "table"],
+    icon: <Columns2 size={18} />,
+    command: ({ editor, range }) => {
+      editor.chain().focus().deleteRange(range)?.insertPricing().run();
     },
   },
   {
@@ -147,6 +167,14 @@ export const suggestionItems = createSuggestionItems([
     icon: <Code size={18} />,
     command: ({ editor, range }) =>
       editor.chain().focus().deleteRange(range).toggleCodeBlock().run(),
+  },
+  {
+    title: "2 columns",
+    description: "Create two columns.",
+    searchTerms: ["columns"],
+    icon: <Columns2 size={18} />,
+    command: ({ editor, range }) =>
+      editor.chain().focus().deleteRange(range).setColumns(2).run(),
   },
   {
     title: "Image",

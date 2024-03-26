@@ -25,11 +25,9 @@ import { TextButtons } from "./selectors/text-buttons";
 import { slashCommand, suggestionItems } from "./slash-command";
 import { ArrowDown, ArrowUp, Trash2 } from "lucide-react";
 
-import { ColumnExtension } from "@gocapsule/column-extension";
 import { AlignButtons } from "./selectors/align-selector";
-// import "@gocapsule/column-extension/src/index.css";
 
-const extensions = [...defaultExtensions, ColumnExtension, slashCommand];
+const extensions = [...defaultExtensions, slashCommand];
 
 const A4_PAGE_HEIGHT = 1123;
 
@@ -50,6 +48,7 @@ const Content = ({
   const [openNode, setOpenNode] = useState(false);
   const [openColor, setOpenColor] = useState(false);
   const [openLink, setOpenLink] = useState(false);
+  const [openAlignment, setOpenAlignment] = useState(false);
 
   const debouncedUpdates = useDebouncedCallback(
     async (editor: EditorInstance) => {
@@ -169,7 +168,7 @@ const Content = ({
           <TextButtons />
           <Separator orientation="vertical" />
 
-          <AlignButtons />
+          <AlignButtons open={openAlignment} onOpenChange={setOpenAlignment} />
           <Separator orientation="vertical" />
 
           <ColorSelector open={openColor} onOpenChange={setOpenColor} />
